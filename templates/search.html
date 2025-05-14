@@ -25,10 +25,22 @@
 </head>
 <body>
     <div class="center-container">
-        <h1>📘 단어장 검색</h1>
-        <form method="get" action="/search">
+        <h1>단어장 검색</h1>
+        <form method="get" action="/search" id="search-form">
             <input type="text" name="q" placeholder="단어를 입력하세요" value="{{ query or '' }}">
-            <button type="submit">검색</button>
+
+            <button type="submit">Search</button>
+
+            <label style="margin-left: 10px">
+                <input type="radio" name="order" value="asc" {% if order == 'asc' %}checked{% endif %} onchange="this.form.submit()">
+                Ascending
+            </label>
+
+            <label style="margin-left: 10px">
+                <input type="radio" name="order" value="desc" {% if order == 'desc' %}checked{% endif %} onchange="this.form.submit()">
+                Descending
+            </label>
+
         </form>
     </div>
 
