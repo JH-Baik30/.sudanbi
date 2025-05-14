@@ -51,8 +51,13 @@
                 <li>
                     <strong>{{ word.english }}</strong> {{ word.pronunciation }} - {{ word.part_of_speech }}<br>
                     <em>뜻 : {{ word.meaning }}</em><br>
+                    카테고리: {{ word.category}}<br>
+                    보조카테고리: {{ word.subcategory}}<br>
                     예문: {{ word.example_sentence }}<br>
-                    해석: {{ word.example_translation }}
+                    해석: {{ word.example_translation }}<br>
+                    유의어: {{ word.synonym }}<br>
+                    반의어: {{ word.antonym }}<br>
+                    <br>
                 </li>
             {% endfor %}
         </ul>
