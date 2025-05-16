@@ -2,11 +2,11 @@
 <html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
-    <title>Word Search</title>
+    <title>Wordbook Search</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .search-section {
-            margin-top: 100px;
+            margin-top: 80px;
         }
         .result-card {
             cursor: pointer;
@@ -15,23 +15,25 @@
 </head>
 <body>
     <div class="container search-section">
+        <!-- 헤더 + 다크모드 스위치 -->
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="text-center flex-grow-1">Wordbook Search</h1>
+            <h1 class="m-0">Wordbook Search</h1>
             <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="darkModeSwitch">
-                <label class="form-check-label" for="darkModeSwitch">Dark Mode</label>
+                <label class="form-check-label ms-2" for="darkModeSwitch">Dark Mode</label>
             </div>
         </div>
 
-        <form method="get" action="/search" class="row justify-content-center g-2" id="search-form">
+        <!-- 검색 폼 -->
+        <form method="get" action="/search" class="row justify-content-center g-2 align-items-center">
             <div class="col-md-4">
-                <input type="text" id="search-input" class="form-control" name="q" placeholder="Enter a word" value="{{ query or '' }}">
+                <input type="text" id="search-input" class="form-control" name="q" placeholder="Enter a word..." value="{{ query or '' }}">
             </div>
 
+            <input type="hidden" name="order" id="orderInput" value="{{ order }}">
             <div class="col-auto">
-                <input type="hidden" name="order" id="order-input" value="{{ order or 'asc' }}">
-                <button type="submit" class="btn btn-outline-secondary" id="toggle-order-btn">
-                    {{ 'Descending' if order == 'desc' else 'Ascending' }}
+                <button type="submit" class="btn btn-outline-secondary" id="sortToggleBtn">
+                    {% if order == 'asc' %}Ascending{% else %}Descending{% endif %}
                 </button>
             </div>
 
@@ -41,6 +43,7 @@
         </form>
     </div>
 
+    <!-- 검색 결과 -->
     <div class="container mt-5">
         {% if results %}
             <h2 class="text-center mb-4">Search Results ({{ results|length }})</h2>
@@ -56,7 +59,7 @@
                         </div>
                     </div>
 
-                    <!-- Word detail modal -->
+                    <!-- 단어 상세 모달 -->
                     <div class="modal fade" id="modal-{{ word.id }}" tabindex="-1" aria-labelledby="modalLabel{{ word.id }}" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -83,37 +86,35 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Autofocus
+        // 검색창 자동 포커스
         document.getElementById("search-input").focus();
 
-        // Dark mode save/restore
-        const darkModeSwitch = document.getElementById("darkModeSwitch");
-        const htmlTag = document.documentElement;
-
+        // 다크모드 유지 및 스위치 반영
+        const html = document.documentElement;
+        const switchEl = document.getElementById("darkModeSwitch");
         const savedTheme = localStorage.getItem("theme");
-        if (savedTheme) {
-            htmlTag.setAttribute("data-bs-theme", savedTheme);
-            darkModeSwitch.checked = savedTheme === "dark";
-        } else {
-            const currentTheme = htmlTag.getAttribute("data-bs-theme") || "light";
-            localStorage.setItem("theme", currentTheme);
-            darkModeSwitch.checked = currentTheme === "dark";
+
+        if (savedTheme === "dark") {
+            html.setAttribute("data-bs-theme", "dark");
+            switchEl.checked = true;
         }
 
-        darkModeSwitch.addEventListener("change", function() {
-            const newTheme = this.checked ? "dark" : "light";
-            htmlTag.setAttribute("data-bs-theme", newTheme);
-            localStorage.setItem("theme", newTheme);
+        switchEl.addEventListener("change", () => {
+            const isDark = html.getAttribute("data-bs-theme") === "dark";
+            html.setAttribute("data-bs-theme", isDark ? "light" : "dark");
+            localStorage.setItem("theme", isDark ? "light" : "dark");
         });
 
-        // Toggle order button
-        document.getElementById("toggle-order-btn").addEventListener("click", function(e) {
-            e.preventDefault();
-            const orderInput = document.getElementById("order-input");
-            const newOrder = orderInput.value === "asc" ? "desc" : "asc";
-            orderInput.value = newOrder;
-            const form = document.getElementById("search-form");
-            form.submit();
+        // 정렬 토글 버튼
+        const sortBtn = document.getElementById("sortToggleBtn");
+        const orderInput = document.getElementById("orderInput");
+
+        sortBtn.addEventListener("click", function(e) {
+            e.preventDefault(); // form 기본 제출 막기
+            const current = orderInput.value;
+            const next = current === "asc" ? "desc" : "asc";
+            orderInput.value = next;
+            this.form.submit();
         });
     </script>
 </body>

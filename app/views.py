@@ -1,7 +1,7 @@
 # app/views.py
 from flask import Blueprint, render_template, request
 from app.models import Word
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
 
 main = Blueprint('main', __name__, template_folder='../templates')
@@ -31,4 +31,4 @@ def search():
 
         results = q.all()
 
-    return render_template('search.html', query=query, results=results)
+    return render_template('search.html', query=query, results=results, order=order)
