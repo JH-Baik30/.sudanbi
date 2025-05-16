@@ -1,7 +1,7 @@
 # init_db.py
 import pandas as pd
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, synonym
+from sqlalchemy.orm import sessionmaker
 from app.models import Base, Word
 
 DATABASE_URL = 'sqlite:///wordbook.db'

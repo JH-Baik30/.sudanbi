@@ -52,8 +52,8 @@
                     <div class="col">
                         <div class="card result-card" data-bs-toggle="modal" data-bs-target="#modal-{{ word.id }}">
                             <div class="card-body">
-                                <h5 class="card-title">{{ word.english }} <small class="text-muted">[{{ word.pronunciation }}]</small></h5>
-                                <h6 class="card-subtitle mb-2 text-muted">{{ word.part_of_speech }}</h6>
+                                <h5 class="card-title">{{ word.english }} <small class="text-muted">{{ word.pronunciation }}</small></h5>
+                                <h6 class="card-subtitle mb-2 text-muted"><strong>Part of speech:</strong> {{ word.part_of_speech }}</h6>
                                 <p class="card-text text-truncate"><strong>Meaning:</strong> {{ word.meaning }}</p>
                             </div>
                         </div>
@@ -71,6 +71,8 @@
                                     <p><strong>Pronunciation:</strong> {{ word.pronunciation }}</p>
                                     <p><strong>Part of Speech:</strong> {{ word.part_of_speech }}</p>
                                     <p><strong>Meaning:</strong> {{ word.meaning }}</p>
+                                    <p><strong>Synonym:</strong> {{ word.synonym }} </p>
+                                    <p><strong>Antonym:</strong> {{ word.antonym }} </p>
                                     <p><strong>Example:</strong> {{ word.example_sentence }}</p>
                                     <p><strong>Translation:</strong> {{ word.example_translation }}</p>
                                 </div>
